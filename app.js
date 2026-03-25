@@ -1,3 +1,6 @@
+// ─── Config ───────────────────────────────────────────────────────────────────
+const DEFAULT_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbynxPKjighg4k5E4mjdnJFsj2bIHZyttKzjiQ6WKaGAxoHART6s90D39reInphmTE0/exec';
+
 // ─── State ────────────────────────────────────────────────────────────────────
 let currentStep = 1;
 const TOTAL_STEPS = 4;
@@ -12,6 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const nowStr = now.toISOString().slice(0, 16);
   document.getElementById('f-date').value = nowStr;
   document.getElementById('pos-date').value = nowStr;
+
+  if (!localStorage.getItem('protocol_sheets_url')) {
+    localStorage.setItem('protocol_sheets_url', DEFAULT_SHEETS_URL);
+  }
 
   setupChips();
   setupPositiveChips();
