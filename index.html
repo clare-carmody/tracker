@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protocol Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="logo-mark">P</div>
+        <div>
+          <h1>Protocol Tracker</h1>
+          <p class="subtitle">Behaviour &amp; context log</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-ghost" onclick="showHistory()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+          Entries
+          <span class="badge" id="entry-count">0</span>
+        </button>
+        <button class="btn btn-positive" onclick="showPositiveForm()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Good Behaviour
+        </button>
+        <button class="btn btn-primary" onclick="showForm()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Log Incident
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- INCIDENT FORM -->
+  <div id="view-form" class="view active">
+    <div class="form-card">
+      <div class="form-progress">
+        <div class="progress-steps">
+          <div class="step active" data-step="1"><span>1</span> Context</div>
+          <div class="step" data-step="2"><span>2</span> Behaviour</div>
+          <div class="step" data-step="3"><span>3</span> Correction</div>
+          <div class="step" data-step="4"><span>4</span> Analysis</div>
+        </div>
+      </div>
+
+      <form id="obs-form" novalidate>
+
+        <!-- STEP 1: Context -->
+        <div class="form-step active" data-step="1">
+          <div class="step-header">
+            <div class="step-icon step-icon-1">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            </div>
+            <div>
+              <h2>Context</h2>
+              <p>When and where did this take place?</p>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="f-date">Date &amp; time <span class="req">*</span></label>
+            <input type="datetime-local" id="f-date" name="date" required>
+          </div>
+
+          <div class="field-group">
+            <label>Setting <span class="req">*</span></label>
+            <div class="chip-grid" id="chips-lieu">
+              <button type="button" class="chip" data-value="Online — messaging">
+                <span class="chip-emoji">💬</span> Online — messaging
+              </button>
+              <button type="button" class="chip" data-value="Online — social media">
+                <span class="chip-emoji">📱</span> Online — social media
+              </button>
+              <button type="button" class="chip" data-value="Online — task / assignment">
+                <span class="chip-emoji">💻</span> Online — task
+              </button>
+              <button type="button" class="chip" data-value="At home">
+                <span class="chip-emoji">🏠</span> At home
+              </button>
+              <button type="button" class="chip" data-value="At work / study">
+                <span class="chip-emoji">🏢</span> At work / study
+              </button>
+              <button type="button" class="chip" data-value="In public">
+                <span class="chip-emoji">🌍</span> In public
+              </button>
+              <button type="button" class="chip" data-value="Other">
+                <span class="chip-emoji">➕</span> Other
+              </button>
+            </div>
+            <input type="hidden" id="f-lieu" name="setting" required>
+          </div>
+
+          <div class="field-group">
+            <label>What was happening beforehand? <span class="req">*</span> <span class="hint">Multiple choices allowed</span></label>
+            <div class="chip-grid" id="chips-ante">
+              <button type="button" class="chip multi" data-value="Transition / change of plan">Transition / change of plan</button>
+              <button type="button" class="chip multi" data-value="Instruction given">Instruction given</button>
+              <button type="button" class="chip multi" data-value="Pressure / stress">Pressure / stress</button>
+              <button type="button" class="chip multi" data-value="Waiting / boredom">Waiting / boredom</button>
+              <button type="button" class="chip multi" data-value="Fatigue">Fatigue</button>
+              <button type="button" class="chip multi" data-value="Trigger / temptation">Trigger / temptation</button>
+              <button type="button" class="chip multi" data-value="Other">Other</button>
+            </div>
+            <input type="hidden" id="f-ante" name="antecedents" required>
+          </div>
+
+          <div class="field-group">
+            <label for="f-personnes">Logged by</label>
+            <input type="text" id="f-personnes" name="loggedBy" placeholder="Who is submitting this entry?">
+          </div>
+        </div>
+
+        <!-- STEP 2: Behaviour -->
+        <div class="form-step" data-step="2">
+          <div class="step-header">
+            <div class="step-icon step-icon-2">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div>
+              <h2>Behaviour</h2>
+              <p>What happened?</p>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Type of behaviour <span class="req">*</span></label>
+            <div class="chip-grid" id="chips-comport">
+              <button type="button" class="chip chip-behavior" data-value="Bratting">
+                <span class="chip-emoji">😈</span> Bratting
+              </button>
+              <button type="button" class="chip chip-behavior" data-value="Dumbness">
+                <span class="chip-emoji">🙄</span> Dumbness
+              </button>
+              <button type="button" class="chip chip-behavior" data-value="Nonchalance">
+                <span class="chip-emoji">😒</span> Nonchalance
+              </button>
+              <button type="button" class="chip chip-behavior" data-value="Forgetting your place">
+                <span class="chip-emoji">⚠️</span> Forgetting your place
+              </button>
+              <button type="button" class="chip chip-behavior" data-value="Sexual urges">
+                <span class="chip-emoji">🔥</span> Sexual urges
+              </button>
+              <button type="button" class="chip chip-behavior" data-value="Incompetence">
+                <span class="chip-emoji">❌</span> Incompetence
+              </button>
+              <button type="button" class="chip chip-behavior" data-value="Other">
+                <span class="chip-emoji">➕</span> Other
+              </button>
+            </div>
+            <input type="hidden" id="f-comport" name="behaviour" required>
+          </div>
+
+          <div class="two-col">
+            <div class="field-group">
+              <label>Severity <span class="req">*</span></label>
+              <div class="intensity-selector" id="intensity-selector">
+                <button type="button" class="intensity-btn" data-value="Minor">
+                  <span class="intensity-dot dot-1"></span>
+                  <span class="intensity-label">Minor</span>
+                </button>
+                <button type="button" class="intensity-btn" data-value="Moderate">
+                  <span class="intensity-dot dot-2"></span>
+                  <span class="intensity-label">Moderate</span>
+                </button>
+                <button type="button" class="intensity-btn" data-value="Serious">
+                  <span class="intensity-dot dot-3"></span>
+                  <span class="intensity-label">Serious</span>
+                </button>
+              </div>
+              <input type="hidden" id="f-intensite" name="severity" required>
+            </div>
+
+            <div class="field-group">
+              <label>Duration <span class="req">*</span></label>
+              <div class="chip-grid chip-grid-col" id="chips-duree">
+                <button type="button" class="chip" data-value="< 1 hour">&lt; 1 hour</button>
+                <button type="button" class="chip" data-value="1–24 hours">1 – 24 hours</button>
+                <button type="button" class="chip" data-value="Ongoing">Ongoing</button>
+              </div>
+              <input type="hidden" id="f-duree" name="duration" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: Correction -->
+        <div class="form-step" data-step="3">
+          <div class="step-header">
+            <div class="step-icon step-icon-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div>
+              <h2>Correction applied</h2>
+              <p>How was this addressed?</p>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Type of correction <span class="req">*</span></label>
+            <div class="chip-grid" id="chips-reaction">
+              <button type="button" class="chip" data-value="Verbal correction">Verbal correction</button>
+              <button type="button" class="chip" data-value="Written assignment">Written assignment</button>
+              <button type="button" class="chip" data-value="Punishment task">Punishment task</button>
+              <button type="button" class="chip" data-value="Privilege restriction">Privilege restriction</button>
+              <button type="button" class="chip" data-value="Denial">Denial</button>
+              <button type="button" class="chip" data-value="No correction yet">No correction yet</button>
+              <button type="button" class="chip" data-value="Other">Other</button>
+            </div>
+            <input type="hidden" id="f-reaction" name="correction" required>
+          </div>
+        </div>
+
+        <!-- STEP 4: Analysis -->
+        <div class="form-step" data-step="4">
+          <div class="step-header">
+            <div class="step-icon step-icon-4">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <div>
+              <h2>Analysis</h2>
+              <p>What was the likely reason?</p>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Likely cause <span class="req">*</span></label>
+            <div class="chip-grid" id="chips-fonction">
+              <button type="button" class="chip chip-function" data-value="Forgetfulness">
+                <span>Forgetfulness</span>
+                <small>forgot the rule / task</small>
+              </button>
+              <button type="button" class="chip chip-function" data-value="Overwhelmed / stress">
+                <span>Overwhelmed</span>
+                <small>external pressure</small>
+              </button>
+              <button type="button" class="chip chip-function" data-value="Testing limits">
+                <span>Testing limits</span>
+                <small>pushing boundaries</small>
+              </button>
+              <button type="button" class="chip chip-function" data-value="Deliberate defiance">
+                <span>Deliberate defiance</span>
+                <small>intentional non-compliance</small>
+              </button>
+              <button type="button" class="chip chip-function" data-value="Misunderstood instruction">
+                <span>Misunderstood</span>
+                <small>unclear instruction</small>
+              </button>
+              <button type="button" class="chip chip-function" data-value="Other">
+                <span>Other</span>
+                <small>see comments</small>
+              </button>
+            </div>
+            <input type="hidden" id="f-fonction" name="cause" required>
+          </div>
+
+          <div class="field-group">
+            <label for="f-commentaires">Notes</label>
+            <textarea id="f-commentaires" name="notes" rows="3" placeholder="Additional context, observations, or follow-up actions…"></textarea>
+          </div>
+        </div>
+
+        <!-- NAV -->
+        <div class="form-nav">
+          <button type="button" class="btn btn-ghost" id="btn-prev" onclick="prevStep()" style="display:none">
+            ← Back
+          </button>
+          <div class="nav-spacer"></div>
+          <button type="button" class="btn btn-primary" id="btn-next" onclick="nextStep()">
+            Next →
+          </button>
+          <button type="submit" class="btn btn-submit" id="btn-submit" style="display:none">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Save entry
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- GOOD BEHAVIOUR FORM -->
+  <div id="view-positive" class="view">
+    <div class="form-card">
+      <div class="form-progress form-progress-positive">
+        <div class="progress-steps">
+          <div class="step active" data-pos-step="1"><span>1</span> Context</div>
+          <div class="step" data-pos-step="2"><span>2</span> Behaviour</div>
+        </div>
+      </div>
+
+      <form id="pos-form" novalidate>
+
+        <!-- POS STEP 1 -->
+        <div class="form-step active" data-step="1">
+          <div class="step-header">
+            <div class="step-icon step-icon-pos">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            </div>
+            <div>
+              <h2>Context</h2>
+              <p>When and where did this happen?</p>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="pos-date">Date &amp; time <span class="req">*</span></label>
+            <input type="datetime-local" id="pos-date" name="date" required>
+          </div>
+
+          <div class="field-group">
+            <label>Setting <span class="req">*</span></label>
+            <div class="chip-grid" id="pos-chips-lieu">
+              <button type="button" class="chip" data-value="Online — messaging">
+                <span class="chip-emoji">💬</span> Online — messaging
+              </button>
+              <button type="button" class="chip" data-value="Online — social media">
+                <span class="chip-emoji">📱</span> Online — social media
+              </button>
+              <button type="button" class="chip" data-value="Online — task / assignment">
+                <span class="chip-emoji">💻</span> Online — task
+              </button>
+              <button type="button" class="chip" data-value="At home">
+                <span class="chip-emoji">🏠</span> At home
+              </button>
+              <button type="button" class="chip" data-value="At work / study">
+                <span class="chip-emoji">🏢</span> At work / study
+              </button>
+              <button type="button" class="chip" data-value="In public">
+                <span class="chip-emoji">🌍</span> In public
+              </button>
+              <button type="button" class="chip" data-value="Other">
+                <span class="chip-emoji">➕</span> Other
+              </button>
+            </div>
+            <input type="hidden" id="pos-lieu" name="setting" required>
+          </div>
+
+          <div class="field-group">
+            <label for="pos-personnes">Logged by</label>
+            <input type="text" id="pos-personnes" name="loggedBy" placeholder="Who is submitting this entry?">
+          </div>
+        </div>
+
+        <!-- POS STEP 2 -->
+        <div class="form-step" data-step="2">
+          <div class="step-header">
+            <div class="step-icon step-icon-pos">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <div>
+              <h2>Good behaviour</h2>
+              <p>What went well?</p>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Type of behaviour <span class="req">*</span></label>
+            <div class="chip-grid" id="pos-chips-comport">
+              <button type="button" class="chip" data-value="Task completed on time">Task completed on time</button>
+              <button type="button" class="chip" data-value="Protocol followed correctly">Protocol followed correctly</button>
+              <button type="button" class="chip" data-value="Showed initiative">Showed initiative</button>
+              <button type="button" class="chip" data-value="Good communication">Good communication</button>
+              <button type="button" class="chip" data-value="Showed restraint / self-control">Showed restraint</button>
+              <button type="button" class="chip" data-value="Followed online rules">Followed online rules</button>
+              <button type="button" class="chip" data-value="Other">Other</button>
+            </div>
+            <input type="hidden" id="pos-comport" name="behaviour" required>
+          </div>
+
+          <div class="field-group">
+            <label for="pos-commentaires">Notes</label>
+            <textarea id="pos-commentaires" name="notes" rows="3" placeholder="Describe what happened and why it stood out…"></textarea>
+          </div>
+        </div>
+
+        <!-- NAV -->
+        <div class="form-nav">
+          <button type="button" class="btn btn-ghost" id="pos-btn-prev" onclick="prevPosStep()" style="display:none">
+            ← Back
+          </button>
+          <div class="nav-spacer"></div>
+          <button type="button" class="btn btn-positive" id="pos-btn-next" onclick="nextPosStep()">
+            Next →
+          </button>
+          <button type="submit" class="btn btn-submit-positive" id="pos-btn-submit" style="display:none">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Save entry
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- HISTORY VIEW -->
+  <div id="view-history" class="view">
+    <div class="history-header">
+      <button class="btn btn-ghost" onclick="showForm()">← Back</button>
+      <h2>All entries</h2>
+      <button class="btn btn-ghost" onclick="exportCSV()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export CSV
+      </button>
+    </div>
+    <div id="history-list"></div>
+    <div class="history-empty" id="history-empty">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <p>No entries yet</p>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toast-msg">Entry saved!</span>
+  </div>
+
+  <!-- SUGGESTION MODAL -->
+  <div class="modal-overlay" id="modal-suggestion" onclick="handleSuggestionOverlayClick(event)">
+    <div class="modal modal-suggestion">
+      <div class="suggestion-header">
+        <div class="suggestion-icon" id="suggestion-icon">💡</div>
+        <div>
+          <h3 id="suggestion-title">Suggested punishment</h3>
+          <p id="suggestion-subtitle">Based on behaviour and severity</p>
+        </div>
+      </div>
+      <div class="suggestion-card" id="suggestion-text">—</div>
+      <div class="suggestion-actions">
+        <button class="btn btn-ghost" onclick="nextSuggestion()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
+          Another
+        </button>
+        <div class="nav-spacer"></div>
+        <button class="btn btn-ghost" onclick="closeSuggestion()">Dismiss</button>
+        <button class="btn btn-primary" id="btn-use-suggestion" onclick="useSuggestion()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Add to entry
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIG MODAL -->
+  <div class="modal-overlay" id="modal-config" onclick="handleModalClick(event)">
+    <div class="modal">
+      <h3>Connect to Google Sheets</h3>
+      <p>Paste your Apps Script URL below to sync all entries to a shared spreadsheet.</p>
+      <div class="field-group">
+        <label for="sheets-url">Apps Script URL</label>
+        <input type="url" id="sheets-url" placeholder="https://script.google.com/macros/s/…/exec">
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeConfig()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveConfig()">Save</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>

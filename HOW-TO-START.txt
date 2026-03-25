@@ -1,0 +1,105 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PROTOCOL TRACKER — HOW TO PUBLISH THIS APP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This folder contains a ready-to-go web app.
+Follow the steps below to put it live on the internet.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 1 — CREATE A GITHUB REPOSITORY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Go to https://github.com/new
+2. Name it "protocol-tracker" (or anything you like)
+3. Set it to Public
+4. Do NOT tick "Add a README" or initialise with any files
+5. Click "Create repository"
+6. Copy the .git URL shown on the next page
+   (looks like: https://github.com/YOUR-NAME/protocol-tracker.git)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 2 — TELL CLAUDE TO PUBLISH IT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Open Claude Code and paste this message:
+
+  "I've created a new GitHub repo at [PASTE URL HERE].
+   Please publish the protocol-tracker folder on my Desktop
+   to that repo and enable GitHub Pages."
+
+Claude will handle the rest automatically.
+
+Your app will be live at:
+  https://YOUR-GITHUB-USERNAME.github.io/protocol-tracker/
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 3 — CONNECT GOOGLE SHEETS (optional but useful)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+This lets every entry sync automatically to a spreadsheet.
+
+A. Create a new Google Sheet at https://sheets.google.com
+
+B. In the sheet, click:
+   Extensions → Apps Script
+
+C. Delete any code already in the editor.
+   Open the file "google-apps-script.gs" from this folder
+   using TextEdit, select all the text, copy it, and
+   paste it into the Apps Script editor.
+
+D. Click Save (the floppy disk icon), then:
+   Deploy → New deployment
+   → Type: Web app
+   → Execute as: Me
+   → Who has access: Anyone
+   → Click Deploy
+   → Copy the URL it gives you (starts with https://script.google...)
+
+E. Open your live app, click the yellow/green bar at the top,
+   paste the URL, and click Save.
+
+All entries will now appear in your Google Sheet automatically —
+incidents on one tab, good behaviour on another.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WHAT THE APP DOES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+"Log Incident" button (blue):
+  4-step form capturing:
+  • Setting (online or offline)
+  • What was happening beforehand
+  • Type of behaviour + severity + duration
+  • Correction applied
+  • Likely cause
+  • Notes
+
+"Good Behaviour" button (green):
+  Quick 2-step form capturing:
+  • Setting
+  • Type of positive behaviour
+  • Notes
+
+"Entries" button:
+  Shows all saved entries. Good behaviour entries have a
+  green stripe. You can delete entries or export everything
+  to a CSV spreadsheet file.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILES IN THIS FOLDER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+index.html           The app itself (open this in a browser to preview)
+style.css            Visual design
+app.js               All the logic
+google-apps-script.gs  Paste this into Google Sheets → Apps Script
+HOW-TO-START.txt     This guide
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PRIVACY NOTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+The repo must be Public for free GitHub Pages hosting —
+meaning anyone who finds the URL can see the code.
+Entries are NOT stored in the code — they go to your
+private Google Sheet. The app itself contains no
+personal data.
+
+If you want the code to be private, you will need a
+paid GitHub account to use GitHub Pages with a private repo.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
