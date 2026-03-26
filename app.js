@@ -424,7 +424,7 @@ function handleModalClick(e) { if (e.target === e.currentTarget) closeConfig(); 
 const SUGGESTIONS = {
 
   funishments: [
-    "Write "I will behave" 50 times with your non-dominant hand",
+    "Write \"I will behave\" 50 times with your non-dominant hand",
     "Recite all your rules from memory — restart if you make a mistake",
     "Perform a silly forfeit of Mistress's choosing",
     "Write a short poem about your misbehaviour and read it aloud",
